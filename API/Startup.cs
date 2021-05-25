@@ -24,6 +24,7 @@ namespace API
         {
             // Adding repositories
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             
             // Other services
             services.AddControllers();
