@@ -6,6 +6,9 @@ namespace Core.Specifications
 {
     public class BaseSpecification<T> : ISpecification<T>
     {
+        public BaseSpecification()
+        { }
+        
         // The logic to replace 'include' statements in the repository
         public BaseSpecification(Expression<Func<T, bool>> criteria)
         {
