@@ -1,3 +1,4 @@
+using API.Helpers;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
@@ -25,6 +26,9 @@ namespace API
             // Adding repositories
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            
+            // Adding AutoMapper
+            services.AddAutoMapper(typeof(MappingProfiles));
             
             // Other services
             services.AddControllers();
