@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.Dtos;
 using API.Errors;
+using API.Helpers;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
@@ -30,15 +31,21 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
+        // By default, once we send an object instead of a list of params, the controller can't identify where those are coming from
+        // so, for this purpose we need [FromQuery] to define explicitly that the params are coming from query string (not body)
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProducts()
+        public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts([FromQuery]ProductSpecParams productPrams)
         {
-            var spec = new ProductsWithTypesAndBrandsSpecification();
-            var products = await _productRepo.ListAsync(spec);
+            var spec = new ProductsWithTypesAndBrandsSpecification(productPrams);
+            var countSpec = new ProductWithFiltersForCountSpecification(productPrams);
+            var totalItems = await _productRepo.CountAsync(spec);
             
+            var products = await _productRepo.ListAsync(spec);
+
+            var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(products);
             // Return a response with Automapped Dto
             // Return to be wrapped into 'Ok' response as we're still returning a list from repo
-            return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(products));
+            return Ok(new Pagination<ProductToReturnDto>(productPrams.PageIndex, productPrams.PageSize, totalItems, data));
 
             // Returning a Dto
             /*return products.Select(product => new ProductToReturnDto
