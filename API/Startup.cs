@@ -24,7 +24,7 @@ namespace API
         {
             // Adding AutoMapper
             services.AddAutoMapper(typeof(MappingProfiles));
-
+            
             // Other services
             services.AddControllers();
             services.AddDbContext<StoreContext>(x =>
