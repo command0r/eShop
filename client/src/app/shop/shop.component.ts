@@ -12,8 +12,8 @@ import {ShopParams} from "../shared/models/shopParams";
 })
 export class ShopComponent implements OnInit {
 
-  // Search property
-  @ViewChild('search', {static: true}) searchTerm!: ElementRef;
+  // Search property. The property need to be not 'static' as it's controlled by the '*ngIf' on the page
+  @ViewChild('search', {static: false}) searchTerm!: ElementRef;
 
   // Use created service
   products!: IProduct[];
