@@ -6,15 +6,15 @@ import {ServerErrorComponent} from "./core/server-error/server-error.component";
 import {NotFoundComponent} from "./core/not-found/not-found.component";
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
-  {path: 'test-error', component: TestErrorComponent},
-  {path: 'server-error', component: ServerErrorComponent},
-  {path: 'not-found', component: NotFoundComponent},
+  {path: '', component: HomeComponent, data: {breadcrumb: 'Home'}},
+  {path: 'test-error', component: TestErrorComponent, data: {breadcrumb: 'Test Errors'}},
+  {path: 'server-error', component: ServerErrorComponent, data: {breadcrumb: 'Server Error'}},
+  {path: 'not-found', component: NotFoundComponent, data: {breadcrumb: 'Not Found'}},
   // {path: 'shop', component: ShopComponent},
   // Implementing lazy-loading, instead of just referencing a ShopComponent (as in the comment above)
   // Shop module will be loaded and activated only when 'shop' path is accessed
-  {path: 'shop', loadChildren: () => import('./shop/shop.module').then(mod => mod.ShopModule)},
-  {path: '**', redirectTo:'', pathMatch: 'full'}
+  {path: 'shop', loadChildren: () => import('./shop/shop.module').then(mod => mod.ShopModule), data: {breadcrumb: 'Shop'}},
+  {path: '**', redirectTo:'not-found', pathMatch: 'full'}
 ];
 
 @NgModule({
