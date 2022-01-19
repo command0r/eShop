@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 
 namespace API
 {
@@ -30,6 +31,14 @@ namespace API
             services.AddDbContext<StoreContext>(x =>
                 x.UseNpgsql(_configuration.GetConnectionString("DefaultConnection")));
 
+            // Adding Redis configuration
+            services.AddSingleton<IConnectionMultiplexer>(c =>
+            {
+                var config = ConfigurationOptions.Parse(_configuration.
+                        GetConnectionString("Redis"), true);
+                return ConnectionMultiplexer.Connect(config);
+            }); 
+            
             services.AddApplicationServices();
             services.AddSwaggerDocumentation();
 
