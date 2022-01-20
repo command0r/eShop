@@ -2,6 +2,7 @@ using API.Extensions;
 using API.Helpers;
 using API.Middleware;
 using Infrastructure.Data;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,9 +29,15 @@ namespace API
             
             // Other services
             services.AddControllers();
+            
+            // Postgres server Db context
             services.AddDbContext<StoreContext>(x =>
                 x.UseNpgsql(_configuration.GetConnectionString("DefaultConnection")));
 
+            // Identity service Db context
+            services.AddDbContext<AppIdentityDbContext>(x =>
+                x.UseNpgsql(_configuration.GetConnectionString("IdentityConnection")));
+            
             // Adding Redis configuration
             services.AddSingleton<IConnectionMultiplexer>(c =>
             {
@@ -40,6 +47,7 @@ namespace API
             }); 
             
             services.AddApplicationServices();
+            services.AddIdentityServices();
             services.AddSwaggerDocumentation();
 
             // Configure CORS support
