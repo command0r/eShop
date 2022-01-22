@@ -17,6 +17,10 @@ namespace API.Helpers
 
             // Map from the Address object to Address DTO and vice versa
             CreateMap<Address, AddressDto>().ReverseMap();
+            
+            // Map basket DTO's
+            CreateMap<CustomerBasketDto, CustomerBasket>();
+            CreateMap<BasketItemDto, BasketItem>();
         }
     }
 }
