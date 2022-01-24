@@ -9,9 +9,31 @@
   <div class="d-flex align-items-center">
     <a routerLink="/basket" class="position-relative">
       <i class="fa fa-shopping-cart fa-2x me-5 text-dark"></i>
-      <div *ngIf="(basket$ | async) as basket" class="cart-no">{{basket.items.length}}</div>
+      <div *ngIf="(basket$ | async)" class="cart-no">{{(basket$ | async)?.items.length}}</div>
     </a>
-    <a class="btn btn-outline-secondary me-2" href="#">Login</a>
-    <a class="btn btn-outline-secondary me-3" href="#">Sign up</a>
+    <!-- We only show these buttons if we don't have a user in the current User 'observable' -->
+    <ng-container *ngIf="(currentUser$ | async) === null">
+      <a routerLink="/account/login" class="btn btn-outline-secondary me-2" href="#">Login</a>
+      <a routerLink="/account/register" class="btn btn-outline-secondary me-3" href="#">Sign up</a>
+    </ng-container>
+    <ng-container *ngIf="currentUser$ | async">
+      <div class="btn-group ms-3 me-5" dropdown>
+        <a class="dropdown-toggle" style="cursor: pointer" dropdownToggle>
+          <strong>Welcome, {{(currentUser$ | async)?.displayName}}</strong></a>
+        <div class="dropdown-menu" style="cursor: pointer" *dropdownMenu>
+          <a class="dropdown-item d-flex align-items-center">
+           <span class="fa fa-shopping-cart me-3"></span><i routerLink="/basket">View basket</i>
+          </a>
+          <a class="dropdown-item d-flex align-items-center py-2">
+            <span class="fa fa-history me-3"></span><i routerLink="/orders">View orders</i>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a (click)="logout()" class="dropdown-item d-flex align-items-center py-2">
+            <span class="fa fa-sign-out me-3"></span><i>Logout</i>
+          </a>
+        </div>
+      </div>
+    </ng-container>
+
   </div>
 </div>
