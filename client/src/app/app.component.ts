@@ -14,7 +14,8 @@ export class AppComponent implements OnInit {
   //products!: IProduct[];
 
   // Constructor
-  constructor(private basketService: BasketService, private accountService: AccountService) { }
+  constructor(private basketService: BasketService, private accountService: AccountService) {
+  }
 
   // Lifecycle methods
   ngOnInit(): void {
@@ -24,18 +25,17 @@ export class AppComponent implements OnInit {
 
   loadCurrentUser() {
     const token = localStorage.getItem('token');
-    if(token) {
-      this.accountService.loadCurrentUser(token).subscribe(() => {
-        console.log('load user');
-      }, error => {
-        console.log(error);
-      });
-    }
+    // @ts-ignore
+    this.accountService.loadCurrentUser(token).subscribe(() => {
+      console.log('load user');
+    }, error => {
+      console.log(error);
+    });
   }
 
   loadBasket() {
     const basketId = localStorage.getItem('basket_id');
-    if(basketId) {
+    if (basketId) {
       this.basketService.getBasket(basketId).subscribe(() => {
         console.log('Initialized basket');
       }, error => {
