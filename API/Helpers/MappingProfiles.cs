@@ -17,7 +17,7 @@ namespace API.Helpers
 
             // Map from the Address object to Address DTO and vice versa
             CreateMap<Address, AddressDto>().ReverseMap();
-            CreateMap<AddressDto, Address>();
+            CreateMap<AddressDto, Core.Entities.OrderAggregate.Address>();
             
             // Map basket DTO's
             CreateMap<CustomerBasketDto, CustomerBasket>();
