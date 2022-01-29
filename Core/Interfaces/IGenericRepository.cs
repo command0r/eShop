@@ -14,5 +14,10 @@ namespace Core.Interfaces
         
         // Method to count the # of items in the list (for pagination)
         Task<int> CountAsync(ISpecification<T> spec);
+        
+        // Methods to support updating. These methods are not async as they're not dealing with database update ops
+        void Add(T entity);
+        void Update(T entity);
+        void Delete(T entity);
     }
 }

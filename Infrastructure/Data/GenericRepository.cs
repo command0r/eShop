@@ -43,6 +43,24 @@ namespace Infrastructure.Data
             return await ApplySpecification(spec).CountAsync();
         }
 
+        // Methods to support updating. These methods are not async as they're not dealing with database update ops
+        public void Add(T entity)
+        {
+            // Sets the entity to 'tracked' status by EF
+            _context.Set<T>().Add(entity);
+        }
+
+        public void Update(T entity)
+        {
+            _context.Set<T>().Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+        }
+
+        public void Delete(T entity)
+        {
+            _context.Set<T>().Remove(entity);
+        }
+
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
             return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);

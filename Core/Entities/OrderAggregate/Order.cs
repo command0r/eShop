@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using Core.Helpers;
 
 namespace Core.Entities.OrderAggregate;
 
@@ -19,7 +19,7 @@ public class Order : BaseEntity
     }
     
     public string BuyerEmail { get; set; }
-    public DateTimeOffset OrderDate { get; set; } = DateTimeOffset.Now;
+    public DateTimeOffset OrderDate { get; set; } = DateTimeHelper.SetKindUtc(DateTime.Now);
     public Address ShipToAddress { get; set; }
     public DeliveryMethod DeliveryMethod { get; set; }
     public IReadOnlyList<OrderItem> OrderItems { get; set; }
@@ -27,6 +27,7 @@ public class Order : BaseEntity
     public OrderStatus Status { get; set; } = OrderStatus.Pending;
     public string PaymentIntentId { get; set; }
 
+    // The naming is conventional - the value will be returned by AutoMapper by default via respective Dto
     public decimal GetTotal()
     {
         return Subtotal + DeliveryMethod.Price;
