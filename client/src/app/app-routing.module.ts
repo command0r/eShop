@@ -14,15 +14,24 @@ const routes: Routes = [
   // {path: 'shop', component: ShopComponent},
   // Implementing lazy-loading, instead of just referencing a ShopComponent (as in the comment above)
   // Shop module will be loaded and activated only when 'shop' path is accessed
+
   {path: 'shop', loadChildren: () => import('./shop/shop.module').then(mod =>
       mod.ShopModule), data: {breadcrumb: 'Shop'}},
+
   {path: 'basket', loadChildren: () => import('./basket/basket.module').then(mod =>
       mod.BasketModule), data: {breadcrumb: 'Basket'}},
+
   {path: 'checkout', canActivate: [AuthGuard],
     loadChildren: () => import('./checkout/checkout.module').then(mod =>
       mod.CheckoutModule), data: {breadcrumb: 'Checkout'}},
+
   {path: 'account', loadChildren: () => import('./account/account.module').then(mod =>
       mod.AccountModule), data: {breadcrumb: {skip: true}}},
+
+  {path: 'orders', canActivate: [AuthGuard],
+    loadChildren: () => import('./orders/orders.module').then(mod =>
+      mod.OrdersModule), data: { breadcrumb: 'Orders' }},
+
   {path: '**', redirectTo:'not-found', pathMatch: 'full'}
 ];
 
