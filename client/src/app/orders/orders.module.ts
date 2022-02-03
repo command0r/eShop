@@ -5,8 +5,6 @@ import {SharedModule} from "../shared/shared.module";
 import {OrdersComponent} from "./orders.component";
 import {OrdersRoutingModule} from "./orders-routing.module";
 
-
-
 @NgModule({
   declarations: [
     OrdersComponent,

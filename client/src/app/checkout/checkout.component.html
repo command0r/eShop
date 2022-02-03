@@ -18,10 +18,10 @@
     </div>
     <div class="col-4">
       <app-order-totals
-        *ngIf="(basketTotals$ | async)"
-        [shippingPrice]="(basketTotals$ | async)?.shipping"
-        [subtotal]="(basketTotals$ | async)?.subtotal"
-        [total]="(basketTotals$ | async)?.total">
+        *ngIf="(basketTotal$ | async)"
+        [shippingPrice]="(basketTotal$ | async)?.shipping"
+        [subtotal]="(basketTotal$ | async)?.subtotal"
+        [total]="(basketTotal$ | async)?.total">
       </app-order-totals>
     </div>
   </div>

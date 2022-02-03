@@ -11,7 +11,7 @@ import {BasketService} from "../basket/basket.service";
   styleUrls: ['./checkout.component.scss']
 })
 export class CheckoutComponent implements OnInit {
-  basketTotals$!: Observable<IBasketTotals>;
+  basketTotal$!: Observable<IBasketTotals>;
   checkoutForm!: FormGroup;
 
   constructor(private fb: FormBuilder, private accountService: AccountService, private basketService: BasketService) {
@@ -20,7 +20,7 @@ export class CheckoutComponent implements OnInit {
   ngOnInit(): void {
     this.createCheckoutForm();
     this.getAddressFromValues();
-    this.basketTotals$ = this.basketService.basketTotals$;
+    this.basketTotal$ = this.basketService.basketTotals$;
   }
 
   createCheckoutForm() {
