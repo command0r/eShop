@@ -17,5 +17,10 @@ namespace Core.Entities
 
         // Initialize an empty list of items
         public List<BasketItem> Items { get; set; } = new List<BasketItem>();
+        
+        // Stripe-related properties
+        public int? DeliveryMethodId { get; set; }
+        public string ClientSecret { get; set; }
+        public string PaymentIntentId { get; set; }
     }
 }
