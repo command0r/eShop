@@ -27,7 +27,13 @@ export class BasketService {
   // Set shipping price
   setShippingPrice(deliveryMethod: IDeliveryMethod) {
     this.shipping = deliveryMethod.price;
+
+    // Set shipping info for the item automatically
+    const basket = this.getCurrentBasketValue();
+    basket.deliveryMethodId = deliveryMethod.id;
+
     this.CalculateTotals();
+    this.setBasket(basket);
   }
 
   // Get basket method
