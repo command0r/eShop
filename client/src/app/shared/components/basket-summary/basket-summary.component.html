@@ -15,7 +15,7 @@
         <th scope="col">
           <div class="py-2 text-uppercase">Total</div>
         </th>
-        <th *ngIf="isBasket" scope="col" class="border-0">
+        <th *ngIf="isBasket" scope="col">
           <div class="py-2 text-uppercase">Remove</div>
         </th>
       </tr>
@@ -33,7 +33,7 @@
               </h5>
               <span
                 *ngIf="item.type"
-                class="text-muted fw-normal fa-italic d-block">Type:
+                class="text-muted fw-normal fst-italic d-block">Type:
                 {{item.type}}</span>
             </div>
 
@@ -42,19 +42,19 @@
         <td class="align-middle"><strong>{{item.price | currency}}</strong></td>
         <td class="align-middle">
           <div class="d-flex align-items-center" [class.justify-content-center]="!isBasket">
-            <i *ngIf="isBasket" (click)="decrementItemQuantity(item)" class="fa fa-minus-circle text-warning mr-2"
+            <i *ngIf="isBasket" (click)="decrementItemQuantity(item)" class="fa fa-minus-circle text-warning me-2"
                style="cursor: pointer; font-size: 2em;"></i>
             <span class="fw-bold" style="font-size: 1.5em;">
               {{item.quantity}}
             </span>
-            <i *ngIf="isBasket" (click)="incrementItemQuantity(item)" class="fa fa-plus-circle text-warning mx-2"
+            <i *ngIf="isBasket" (click)="incrementItemQuantity(item)" class="fa fa-plus-circle text-warning ms-2"
                style="cursor: pointer; font-size: 2em;"></i>
           </div>
         </td>
         <td class="align-middle">
           <strong>{{item.price * item.quantity | currency}}</strong></td>
-        <td class="align-middle text-center">
-          <a class="text-danger">
+        <td class="align-middle">
+          <a class="text-danger ms-4">
             <i *ngIf="isBasket" (click)="removeBasketItem(item)" class="fa fa-trash"
                style="font-size: 2em; cursor: pointer;"></i>
           </a>

@@ -24,6 +24,17 @@ export class BasketService {
   constructor(private http: HttpClient) {
   }
 
+  // Payment procedure (intent)
+  createPaymentIntent(){
+    return this.http.post<IBasket>(this.baseUrl + 'payment/' + this.getCurrentBasketValue().id, {})
+      .pipe(
+        map((basket: IBasket) => {
+          this.basketSource.next(basket);
+          console.log(this.getCurrentBasketValue());
+        })
+      );
+  }
+
   // Set shipping price
   setShippingPrice(deliveryMethod: IDeliveryMethod) {
     this.shipping = deliveryMethod.price;
@@ -31,6 +42,7 @@ export class BasketService {
     // Set shipping info for the item automatically
     const basket = this.getCurrentBasketValue();
     basket.deliveryMethodId = deliveryMethod.id;
+    basket.shippingPrice = deliveryMethod.price;
 
     this.CalculateTotals();
     this.setBasket(basket);
@@ -38,12 +50,15 @@ export class BasketService {
 
   // Get basket method
   getBasket(id: string) {
-    return this.http.get(this.baseUrl + 'basket?id=' + id)
+    return this.http.get<IBasket>(this.baseUrl + 'basket?id=' + id)
       // We need to set our basketSource with the basket we get from the API
       .pipe(
-        // @ts-ignore
         map((basket: IBasket) => {
           this.basketSource.next(basket);
+
+          // Factor-in the shipping price before calculating totals
+          this.shipping = basket.shippingPrice!;
+
           this.CalculateTotals();
         })
       );
