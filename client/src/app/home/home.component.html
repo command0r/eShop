@@ -1,16 +1,51 @@
 <carousel>
   <slide>
-    <img src="assets/images/hero1.jpg" alt="First slide" style="display: block; width: 100%">
+    <img src="assets/images/carousel-1.png" alt="First slide" style="display: block; width: 100%">
   </slide>
   <slide>
-    <img src="assets/images/hero2.jpg" alt="Second slide" style="display: block; width: 100%">
+    <img src="assets/images/carousel-2.jpg" alt="Second slide" style="display: block; width: 100%">
   </slide>
   <slide>
-    <img src="assets/images/hero2.jpg" alt="Third slide" style="display: block; width: 100%">
+    <img src="assets/images/carousel-3.jpg" alt="Third slide" style="display: block; width: 100%">
+  </slide>
+  <slide>
+    <img src="assets/images/carousel-4.jpg" alt="Fourth slide" style="display: block; width: 100%">
+  </slide>
+  <slide>
+    <img src="assets/images/carousel-5.jpg" alt="Fifth slide" style="display: block; width: 100%">
   </slide>
 </carousel>
 <section class="featured">
-  <div class="d-flex justify-content-center pt-4">
+  <div class="d-flex justify-content-center pt-3">
     <h1>Welcome to the shop!</h1>
   </div>
 </section>
+
+<div class="container">
+<owl-carousel-o [options]="customOptions" id="owl-carousel">
+  <ng-template carouselSlide><div class="slideItem">
+    <img src="assets/images/hiking/client1.png" alt="First slide" class="item">
+  </div></ng-template>
+  <ng-template carouselSlide><div class="slideItem">
+    <img src="assets/images/hiking/client2.png" alt="Second slide" class="item">
+  </div></ng-template>
+  <ng-template carouselSlide><div class="slideItem">
+    <img src="assets/images/hiking/client3.png" alt="Third slide" class="item">
+  </div></ng-template>
+  <ng-template carouselSlide><div class="slideItem">
+    <img src="assets/images/hiking/client4.png" alt="Fourth slide" class="item">
+  </div></ng-template>
+  <ng-template carouselSlide><div class="slideItem">
+    <img src="assets/images/hiking/client5.png" alt="Fifth slide" class="item">
+  </div></ng-template>
+  <ng-template carouselSlide><div class="slideItem">
+    <img src="assets/images/hiking/client6.png" alt="Sixth slide" class="item">
+  </div></ng-template>
+  <ng-template carouselSlide><div class="slideItem">
+    <img src="assets/images/hiking/client7.png" alt="Seventh slide" class="item">
+  </div></ng-template>
+  <ng-template carouselSlide><div class="slideItem">
+    <img src="assets/images/hiking/client8.png" alt="Eight slide" class="item">
+  </div></ng-template>
+</owl-carousel-o>
+</div>

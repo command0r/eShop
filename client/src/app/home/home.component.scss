@@ -1,9 +1,18 @@
 .featured {
-  height: 250px;
+  height: 150px;
 }
 
-img {
+slide {
   object-fit: cover;
   height: 600px;
   width: 100%;
+}
+
+#owl-carousel .item {
+  width: 135px;
+  height: auto;
+}
+
+.slideItem {
+  margin: 10px;
 }

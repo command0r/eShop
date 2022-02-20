@@ -10,6 +10,7 @@ import {ErrorInterceptor} from "./core/interceptors/error.interceptor";
 import {NgxSpinnerModule} from "ngx-spinner";
 import {LoadingInterceptor} from "./core/interceptors/loading.interceptor";
 import {JwtInterceptor} from "./core/interceptors/jwt.interceptor";
+import {CarouselModule} from "ngx-owl-carousel-o";
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import {JwtInterceptor} from "./core/interceptors/jwt.interceptor";
     HttpClientModule,
     CoreModule,
     HomeModule,
+    CarouselModule,
     NgxSpinnerModule
   ],
   // Register interceptors
