@@ -1,11 +1,14 @@
 <div class="container">
   <ul class="nav nav-pills nav-justified">
     <li class="nav-item" *ngFor="let step of steps; let i = index">
+      <!-- Remove [disabled]="true" to make tabs clickable -->
       <button
         (click)="onClick(i)"
+        [disabled]="true"
         [class.active]="selectedIndex === i"
         class="nav-link py-3 text-uppercase fw-bold w-100">
-        {{step.label}}:{{step.completed}}
+        {{step.label}}
+        <!-- {{step.label}}:{{step.completed}} Indication of a step -->
       </button>
     </li>
   </ul>

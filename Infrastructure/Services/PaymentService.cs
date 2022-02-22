@@ -29,6 +29,10 @@ public class PaymentService : IPaymentService
     {
         StripeConfiguration.ApiKey = _config["StripeSettings:SecretKey"];
         var basket = await _basketRepository.GetBasketAsync(basketId);
+        
+        // Check if we have a basket before creating a payment intent
+        if (basket == null) return null;
+        
         var shippingPrice = 0m;
         
         // Check to see if we have a delivery method in a basket

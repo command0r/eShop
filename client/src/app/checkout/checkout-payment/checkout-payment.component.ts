@@ -4,7 +4,6 @@ import {BasketService} from "../../basket/basket.service";
 import {CheckoutService} from "../checkout.service";
 import {ToastrService} from "ngx-toastr";
 import {IBasket} from "../../shared/models/basket";
-import {IOrder} from "../../shared/models/order";
 import {NavigationExtras, Router} from "@angular/router";
 
 declare var Stripe: any;
@@ -27,6 +26,7 @@ export class CheckoutPaymentComponent implements AfterViewInit, OnDestroy {
   cardCvc: any;
   cardErrors: any;
   cardHandler = this.onChange.bind(this);
+  loading = false;
 
   constructor(private basketService: BasketService, private checkoutService: CheckoutService,
               private toastr: ToastrService, private router: Router) {
@@ -59,7 +59,7 @@ export class CheckoutPaymentComponent implements AfterViewInit, OnDestroy {
   }
 
   onChange({error}) {
-    if(error) {
+    if (error) {
       // The error coming from Stripe
       this.cardErrors = error.message;
     } else {
@@ -67,36 +67,30 @@ export class CheckoutPaymentComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  submitOrder() {
+  async submitOrder() {
+    this.loading = true;
     const basket = this.basketService.getCurrentBasketValue();
-    const orderToCreate = this.getOrderToCreate(basket);
-    // @ts-ignore
-    // Create order and get it returned in the 'subscribe' method, then delete a local basket
-    this.checkoutService.createOrder(orderToCreate).subscribe((order: IOrder) => {
-      this.toastr.success('Order created successfully');
-      // Confirm payment intent, init payment from the customer
-      this.stripe.confirmCardPayment(basket.clientSecret, {
-        payment_method: {
-          card: this.cardNumber,
-          billing_details: {
-            name: this.checkoutForm.get('paymentForm')?.get('nameOnCard')?.value
-          }
-        }
-      }).then(result => {
-        console.log(result);
-        if(result.paymentIntent) {
-          // Perform these actions in payment intent in Stripe succeeded
-          this.basketService.deleteLocalBasket(basket.id);
-          const navigationExtras: NavigationExtras = {state: order};
-          this.router.navigate(['checkout/success'], navigationExtras);
-        } else {
-          this.toastr.error('Payment error');
-        }
-      });
-    }, error => {
-      this.toastr.error(error.message);
+
+    try {
+      // Wait until 'createOrder' complete before moving to the next step
+      const createOrder = await this.createOrder(basket);
+      // Make a request to Stripe
+      const paymentResult = await this.confirmPaymentWithStripe(basket);
+
+      // Perform these actions in payment intent in Stripe succeeded
+      if (paymentResult.paymentIntent) {
+        this.basketService.deleteLocalBasket(basket.id);
+        const navigationExtras: NavigationExtras = {state: createOrder};
+        this.router.navigate(['checkout/success'], navigationExtras);
+      } else {
+        this.toastr.error(paymentResult.error.message);
+      }
+      this.loading = false;
+    }
+     catch (error) {
       console.log(error);
-    });
+      this.loading = false;
+    }
   }
 
   private getOrderToCreate(basket: IBasket) {
@@ -105,5 +99,22 @@ export class CheckoutPaymentComponent implements AfterViewInit, OnDestroy {
       deliveryMethodId: +this.checkoutForm.get('deliveryForm')?.get('deliveryMethod')?.value,
       shipToAddress: this.checkoutForm.get('addressForm')?.value
     };
+  }
+
+  private async createOrder(basket: IBasket) {
+    const orderToCreate = this.getOrderToCreate(basket);
+    return this.checkoutService.createOrder(orderToCreate).toPromise();
+  }
+
+  private async confirmPaymentWithStripe(basket) {
+    // Confirm payment intent, init payment from the customer
+    return this.stripe.confirmCardPayment(basket.clientSecret, {
+      payment_method: {
+        card: this.cardNumber,
+        billing_details: {
+          name: this.checkoutForm.get('paymentForm')?.get('nameOnCard')?.value
+        }
+      }
+    });
   }
 }

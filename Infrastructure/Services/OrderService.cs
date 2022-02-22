@@ -12,11 +12,13 @@ public class OrderService : IOrderService
 {
     private readonly IBasketRepository _basketRepo;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IPaymentService _paymentService;
 
-    public OrderService(IBasketRepository basketRepo, IUnitOfWork unitOfWork)
+    public OrderService(IBasketRepository basketRepo, IUnitOfWork unitOfWork, IPaymentService paymentService)
     {
         _basketRepo = basketRepo;
         _unitOfWork = unitOfWork;
+        _paymentService = paymentService;
     } 
     
     public async Task<Order> CreateOderAsync(string buyerEmail, int deliveryMethodId, string basketId, Address shippingAddress)
@@ -33,9 +35,24 @@ public class OrderService : IOrderService
             items.Add(orderItem);
         }
 
+        // Get delivery method from repo
         var deliveryMethod = await _unitOfWork.Repository<DeliveryMethod>().GetByIdAsync(deliveryMethodId);
+        
+        // Calc subtotal
         var subtotal = items.Sum(item => item.Price * item.Quantity);
-        var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subtotal);
+        
+        // Check if there's an existing order before creating a new one
+        var spec = new OrderByPaymentIntentIdWithItemsSpecification(basket.PaymentIntentId);
+        var existingOrder = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
+        if (existingOrder != null)
+        {
+            _unitOfWork.Repository<Order>().Delete(existingOrder);
+            await _paymentService.CreateOrUpdatePaymentIntent(basket.PaymentIntentId);
+        }
+        
+        // Create order (and also track 'payment intent id')
+        // Matching payment intent id and the order requires a separate specification class 
+        var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subtotal, basket.PaymentIntentId);
         
         // Save to a Db
         _unitOfWork.Repository<Order>().Add(order);
