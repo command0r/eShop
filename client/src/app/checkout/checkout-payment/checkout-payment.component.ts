@@ -27,6 +27,9 @@ export class CheckoutPaymentComponent implements AfterViewInit, OnDestroy {
   cardErrors: any;
   cardHandler = this.onChange.bind(this);
   loading = false;
+  cardNumberValid = false;
+  cardExpiryValid = false;
+  cardCvcValid = false;
 
   constructor(private basketService: BasketService, private checkoutService: CheckoutService,
               private toastr: ToastrService, private router: Router) {
@@ -58,12 +61,26 @@ export class CheckoutPaymentComponent implements AfterViewInit, OnDestroy {
     this.cardCvc.destroy();
   }
 
-  onChange({error}) {
-    if (error) {
+  onChange(event) {
+    // console.log(event);
+    if (event.error) {
       // The error coming from Stripe
-      this.cardErrors = error.message;
+      this.cardErrors = event.error.message;
     } else {
       this.cardErrors = null;
+    }
+
+    // Check payment card validity
+    switch (event.elementType){
+      case 'cardNumber':
+        this.cardNumberValid = event.complete;
+        break;
+      case 'cardExpiry':
+        this.cardExpiryValid = event.complete;
+        break;
+      case 'cardCvc':
+        this.cardCvcValid = event.complete;
+        break;
     }
   }
 
@@ -79,7 +96,7 @@ export class CheckoutPaymentComponent implements AfterViewInit, OnDestroy {
 
       // Perform these actions in payment intent in Stripe succeeded
       if (paymentResult.paymentIntent) {
-        this.basketService.deleteLocalBasket(basket.id);
+        this.basketService.deleteBasket(basket);
         const navigationExtras: NavigationExtras = {state: createOrder};
         this.router.navigate(['checkout/success'], navigationExtras);
       } else {

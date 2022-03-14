@@ -42,7 +42,7 @@ public class OrderService : IOrderService
         var subtotal = items.Sum(item => item.Price * item.Quantity);
         
         // Check if there's an existing order before creating a new one
-        var spec = new OrderByPaymentIntentIdWithItemsSpecification(basket.PaymentIntentId);
+        var spec = new OrderByPaymentIntentIdSpecification(basket.PaymentIntentId);
         var existingOrder = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
         if (existingOrder != null)
         {
