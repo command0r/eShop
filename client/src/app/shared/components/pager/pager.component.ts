@@ -10,6 +10,7 @@ export class PagerComponent implements OnInit {
   // Input properties (to be filled wherever the component is used)
   @Input() totalCount!: number;
   @Input() pageSize!: number;
+  @Input() pageNumber!: number;
 
   // Output property - to emit and react on a specific event
   // /i.e., emitting the event from a child to parent component

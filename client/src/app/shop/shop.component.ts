@@ -19,7 +19,7 @@ export class ShopComponent implements OnInit {
   products!: IProduct[];
   brands!: IBrand[];
   types!: IType[];
-  shopParams = new ShopParams();
+  shopParams!: ShopParams;
   totalCount!: number;
 
   sortOptions = [
@@ -29,23 +29,26 @@ export class ShopComponent implements OnInit {
   ];
 
   // Inject shop service
-  constructor(private shopService: ShopService) { }
+  constructor(private shopService: ShopService) {
+    this.shopParams = this.shopService.getShopParams();
+  }
 
   ngOnInit() {
     // Call methods (so they're available)
-    this.getProducts();
+    this.getProducts(true);
     this.getBrands();
     this.getTypes();
   }
 
-  getProducts() {
+  getProducts(useCache = false) {
     // Gets access to a backend API
     // we need to 'subscribe' to make use of an 'observable'
-    this.shopService.getProducts(this.shopParams)
+    this.shopService.getProducts(useCache)
       .subscribe(response => {
         this.products = response!.data;
-        this.shopParams.pageNumber = response!.pageIndex;
-        this.shopParams.pageSize = response!.pageSize;
+        // not gonna set these since this was moved to a servie
+        // this.shopParams.pageNumber = response!.pageIndex;
+        // this.shopParams.pageSize = response!.pageSize;
         this.totalCount = response!.count;
 
     }, error => {
@@ -71,41 +74,57 @@ export class ShopComponent implements OnInit {
   }
 
   onBrandSelected(brandId: number) {
-    this.shopParams.brandId = brandId;
-    this.shopParams.pageNumber = 1;
+    // this is to set the value inside the service (instead of doing it locally)
+    const params = this.shopService.getShopParams();
+
+    params.brandId = brandId;
+    params.pageNumber = 1;
+
+    // this way the service is going to 'remember' what we're passing in when we get products
+    this.shopService.setShopParams(params);
+
     this.getProducts();
   }
 
   onTypeSelected(typeId: number) {
-    this.shopParams.typeId = typeId;
-    this.shopParams.pageNumber = 1;
+    const params = this.shopService.getShopParams();
+    params.typeId = typeId;
+    params.pageNumber = 1;
+    this.shopService.setShopParams(params);
     this.getProducts();
   }
 
   onSortSelected(sort: string) {
-    this.shopParams.sort = sort;
+    const params = this.shopService.getShopParams();
+    params.sort = sort;
+    this.shopService.setShopParams(params);
     this.getProducts();
   }
 
   // Page changed event handling (for pagination)
   onPageChanged(event: any) {
-    if(this.shopParams.pageNumber !== event)
+    const params = this.shopService.getShopParams();
+    if(params.pageNumber !== event)
     {
-      this.shopParams.pageNumber = event;
-      this.getProducts();
+      params.pageNumber = event;
+      this.shopService.setShopParams(params);
+      this.getProducts(true );
     }
   }
 
   // Search method
   onSearch() {
-    this.shopParams.search = this.searchTerm.nativeElement.value;
-    this.shopParams.pageNumber = 1;
+    const params = this.shopService.getShopParams();
+    params.search = this.searchTerm.nativeElement.value;
+    params.pageNumber = 1;
+    this.shopService.setShopParams(params);
     this.getProducts();
   }
 
   onReset() {
     this.searchTerm.nativeElement.value = '';
     this.shopParams = new ShopParams();
+    this.shopService.setShopParams(this.shopParams);
     this.getProducts();
   }
 }

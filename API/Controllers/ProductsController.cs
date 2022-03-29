@@ -33,6 +33,7 @@ namespace API.Controllers
 
         // By default, once we send an object instead of a list of params, the controller can't identify where those are coming from
         // so, for this purpose we need [FromQuery] to define explicitly that the params are coming from query string (not body)
+        [Cached(600)]
         [HttpGet]
         public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts([FromQuery]ProductSpecParams productPrams)
         {
@@ -66,6 +67,7 @@ namespace API.Controllers
         //    return "Return a single product";
         //}
         
+        [Cached(600)]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status404NotFound)]
@@ -78,12 +80,14 @@ namespace API.Controllers
             return _mapper.Map<Product, ProductToReturnDto>(product);
         }
 
+        [Cached(600)]
         [HttpGet("brands")]
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
         {
             return Ok(await _productBrandRepo.ListAllAsync());
         }
         
+        [Cached(600)]
         [HttpGet("types")]
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductTypes()
         {
