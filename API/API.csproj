@@ -22,54 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Content" />
+    <Content Include="Content\**" CopyToPublishDirectory="PreserveNewest" />
     <Folder Include="wwwroot" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Content\images\products\backpacks\backpack-1.png" />
-    <Content Include="Content\images\products\backpacks\backpack-2.jpg" />
-    <Content Include="Content\images\products\backpacks\backpack-3.jpg" />
-    <Content Include="Content\images\products\backpacks\backpack-4.png" />
-    <Content Include="Content\images\products\boots\boots-1.jpg" />
-    <Content Include="Content\images\products\boots\boots-10.jpg" />
-    <Content Include="Content\images\products\boots\boots-11.jpg" />
-    <Content Include="Content\images\products\boots\boots-12.jpg" />
-    <Content Include="Content\images\products\boots\boots-2.jpg" />
-    <Content Include="Content\images\products\boots\boots-3.jpg" />
-    <Content Include="Content\images\products\boots\boots-4.jpg" />
-    <Content Include="Content\images\products\boots\boots-5.jpg" />
-    <Content Include="Content\images\products\boots\boots-6.jpg" />
-    <Content Include="Content\images\products\boots\boots-7.jpg" />
-    <Content Include="Content\images\products\boots\boots-8.jpg" />
-    <Content Include="Content\images\products\boots\boots-9.jpg" />
-    <Content Include="Content\images\products\equipment\binoculars-1.jpg" />
-    <Content Include="Content\images\products\equipment\binoculars-2.jpg" />
-    <Content Include="Content\images\products\equipment\binoculars-3.jpg" />
-    <Content Include="Content\images\products\equipment\carabiner-1.jpg" />
-    <Content Include="Content\images\products\equipment\carabiner-2.jpg" />
-    <Content Include="Content\images\products\equipment\carabiner-3.jpg" />
-    <Content Include="Content\images\products\equipment\carabiner-4.jpg" />
-    <Content Include="Content\images\products\equipment\carabiner-5.jpg" />
-    <Content Include="Content\images\products\equipment\carabiner-6.jpg" />
-    <Content Include="Content\images\products\equipment\carabiner-7.jpg" />
-    <Content Include="Content\images\products\equipment\compass-1.jpg" />
-    <Content Include="Content\images\products\equipment\compass-2.jpg" />
-    <Content Include="Content\images\products\equipment\compass-3.jpg" />
-    <Content Include="Content\images\products\equipment\helmet-1.jpg" />
-    <Content Include="Content\images\products\equipment\knife-1.jpg" />
-    <Content Include="Content\images\products\equipment\knife-2.jpg" />
-    <Content Include="Content\images\products\equipment\knife-3.jpg" />
-    <Content Include="Content\images\products\equipment\knife-4.jpg" />
-    <Content Include="Content\images\products\equipment\pump-1.jpg" />
-    <Content Include="Content\images\products\equipment\stool-1.jpg" />
-    <Content Include="Content\images\products\equipment\strap-1.jpg" />
-    <Content Include="Content\images\products\tents\tent-1.jpg" />
-    <Content Include="Content\images\products\tents\tent-2.jpg" />
-    <Content Include="Content\images\products\tents\tent-3.jpg" />
-    <Content Include="Content\images\products\tents\tent-4.jpg" />
-    <Content Include="Content\images\products\tents\tent-5.jpg" />
-    <Content Include="Content\images\products\tents\tent-6.jpg" />
-  </ItemGroup>
-
 </Project>
