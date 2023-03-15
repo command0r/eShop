@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild} from '@angular/core';
-import {FormGroup} from "@angular/forms";
+import {UntypedFormGroup} from "@angular/forms";
 import {BasketService} from "../../basket/basket.service";
 import {CheckoutService} from "../checkout.service";
 import {ToastrService} from "ngx-toastr";
@@ -14,7 +14,7 @@ declare var Stripe: any;
   styleUrls: ['./checkout-payment.component.scss']
 })
 export class CheckoutPaymentComponent implements AfterViewInit, OnDestroy {
-  @Input() checkoutForm!: FormGroup;
+  @Input() checkoutForm!: UntypedFormGroup;
 
   // Access to template reference variables in the html (for Stripe)
   @ViewChild('cardNumber', {static: true}) cardNumberElement!: ElementRef;
