@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace API.Helpers
 {
     // Creating a generic type for pagination

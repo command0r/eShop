@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Core.Entities;
+﻿using Core.Entities;
 using Core.Specifications;
 using Microsoft.EntityFrameworkCore;
 

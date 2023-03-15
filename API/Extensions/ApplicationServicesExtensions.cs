@@ -1,18 +1,43 @@
-using System.Linq;
 using API.Errors;
+using API.Helpers;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 
 namespace API.Extensions
 {
     // Extension class to keep Startup.cs neat and tidy
     public static class ApplicationServicesExtensions
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
+            // Adding AutoMapper
+            services.AddAutoMapper(typeof(MappingProfiles));
+
+            // Postgres server Db context
+            services.AddDbContext<StoreContext>(x =>
+                x.UseNpgsql(config.GetConnectionString("DefaultConnection")));
+
+            // Adding Redis configuration
+            services.AddSingleton<IConnectionMultiplexer>(c =>
+            {
+                var configuration = ConfigurationOptions.Parse(config.
+                    GetConnectionString("Redis")!, true);
+                return ConnectionMultiplexer.Connect(configuration);
+            });
+
+            // Configure CORS support
+            services.AddCors(opt =>
+                opt.AddPolicy("CorsPolicy",
+                    policy =>
+                    {
+                        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                    })
+            );
+            
             // Adding repositories
             services.AddSingleton<IResponseCacheService, ResponseCacheService>();
             services.AddScoped<IPaymentService, PaymentService>();

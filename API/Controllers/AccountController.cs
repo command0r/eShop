@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using API.Dtos;
 using API.Errors;
 using API.Extensions;

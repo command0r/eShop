@@ -1,5 +1,3 @@
-using System.Linq;
-using System.Threading.Tasks;
 using Core.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 

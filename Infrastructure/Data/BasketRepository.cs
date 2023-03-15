@@ -1,6 +1,4 @@
-using System;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Core.Entities;
 using Core.Interfaces;
 using StackExchange.Redis;

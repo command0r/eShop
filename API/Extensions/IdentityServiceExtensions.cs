@@ -3,8 +3,7 @@ using Core.Entities.Identity;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace API.Extensions;
@@ -18,6 +17,10 @@ public static class IdentityServiceExtensions
         builder = new IdentityBuilder(builder.UserType, builder.Services);
         builder.AddEntityFrameworkStores<AppIdentityDbContext>();
         builder.AddSignInManager<SignInManager<AppUser>>();
+        
+        // Identity service Db context
+        services.AddDbContext<AppIdentityDbContext>(x =>
+            x.UseNpgsql(config.GetConnectionString("IdentityConnection")));
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>

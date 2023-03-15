@@ -1,5 +1,3 @@
-using System.ComponentModel.Design.Serialization;
-
 namespace Core.Specifications
 {
     // Setting up parameters for the Products controller
